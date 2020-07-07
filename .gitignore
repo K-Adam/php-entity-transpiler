@@ -1,0 +1,9 @@
+/vendor
+
+*.bak
+
+.phpunit.result.cache
+
+.tmp
+/temp
+/nbproject/*

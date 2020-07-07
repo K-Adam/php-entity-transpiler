@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+$autoloadPaths = [
+    'vendor/autoload.php',    // project
+    '../vendor/autoload.php', // project/bin
+    '../autoload.php'         // vendor/bin
+];
+
+$autoloadPath = null;
+foreach($autoloadPaths as $path) {
+    if(is_file($path)) {
+        $autoloadPath = $path;
+        break;
+    }
+}
+
+if(!$autoloadPath) {
+    print("The autoloader can not be located");
+    die(1);
+}
+
+// Start autoloader
+require($autoloadPath);
+
+// Run CLI
+$cli = new EntityTranspiler\UserInterface\CommandLine();
+$cli->run();
