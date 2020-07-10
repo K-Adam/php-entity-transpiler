@@ -147,6 +147,16 @@ class TypeParserTest extends TestCase {
     }
 
     /**
+     * @depends testNestedObject
+     */
+    public function testArrayInObject() {
+        $nestedObjType = $this->parser->parse("{int:string[]}");
+        
+        $this->assertEquals(PhpType::TYPE_OBJECT, $nestedObjType->type);
+        $this->assertEquals(PhpType::TYPE_ARRAY, $nestedObjType->value->type);
+    }
+
+    /**
      * @depends testObjectWithKey
      */
     public function testObjectWithKeyName() {

@@ -44,7 +44,7 @@ class TypeParser {
         $match = [];
         if(
           preg_match('/^array<\s*(.*)\s*>$/', $typeName, $match) ||
-          preg_match('/(.+)\[\s*\]/', $typeName, $match)
+          preg_match('/^(.+)\[\s*\]$/', $typeName, $match)
         ) {
             $subType = $this->parse($match[1]);
             return new PhpType(PhpType::TYPE_ARRAY, $subType);
@@ -58,7 +58,7 @@ class TypeParser {
         $keyTypeExp = "int|string";
         $keyNameExp = "[a-zA-Z_]+";
 
-        $regex = '/{(?:\s*(?:('.$keyTypeExp.')|\[\s*('.$keyNameExp.')\s*:\s*('.$keyTypeExp.')\s*\])\s*:)?\s*(.*[^\s]+)\s*}/';
+        $regex = '/^{(?:\s*(?:('.$keyTypeExp.')|\[\s*('.$keyNameExp.')\s*:\s*('.$keyTypeExp.')\s*\])\s*:)?\s*(.*[^\s]+)\s*}$/';
         $match = [];
 
         preg_match($regex, $typeName, $match);
