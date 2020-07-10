@@ -25,7 +25,7 @@ class TypeNameResolver {
                 return $this->getArrayType($pType->value);
 
             case PhpType::TYPE_OBJECT:
-                return $this->getObjectType($pType->value, $pType->key);
+                return $this->getObjectType($pType->value, $pType->key, $pType->keyName);
 
             case PhpType::TYPE_CLASS:
                 return $this->getClassType($pType->value);
@@ -61,10 +61,10 @@ class TypeNameResolver {
         return "Array<$subName>";
     }
 
-    private function getObjectType($tValue, $tKey): string {
+    private function getObjectType($tValue, $tKey, $nKey): string {
         $keyType = ($tKey=="int") ? "number" : "string";
         $valType = $this->getTypeName($tValue);
-        return "{[key:$keyType]:$valType}";
+        return "{[$nKey:$keyType]:$valType}";
     }
 
     private function getClassType($tValue): string {

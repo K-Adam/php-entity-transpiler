@@ -19,10 +19,14 @@ class PhpType {
     /** @var "string"|"int" */
     public $key;
 
-    function __construct(string $type, $value = null, string $key = null) {
+    /** @var string */
+    public $keyName;
+
+    function __construct(string $type, $value = null, string $key = null, string $keyName = "key") {
         $this->type = $type;
         $this->value = $value;
         $this->key = $key;
+        $this->keyName = $keyName;
     }
 
 }

@@ -146,4 +146,17 @@ class TypeParserTest extends TestCase {
         $this->assertEquals("string", $nestedObjType->value->value->value);
     }
 
+    /**
+     * @depends testObjectWithKey
+     */
+    public function testObjectWithKeyName() {
+
+        $strObjectType = $this->parser->parse("{[id:int]:string}");
+
+        $this->assertEquals(PhpType::TYPE_OBJECT, $strObjectType->type);
+        $this->assertEquals("int", $strObjectType->key);
+        $this->assertEquals("id", $strObjectType->keyName);
+
+    }
+
 }

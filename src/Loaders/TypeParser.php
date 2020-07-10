@@ -54,28 +54,36 @@ class TypeParser {
     }
 
     private function parseObject(string $typeName) :? PhpType {
-        $first = substr($typeName, 0, 1);
-        $last = substr($typeName, -1);
 
-        if($first != '{' || $last != '}') {
-            return null;
-        }
+        $keyTypeExp = "int|string";
+        $keyNameExp = "[a-zA-Z_]+";
 
-        $content = trim(substr($typeName, 1, -1));
-        $colonPos = strpos($content, ":");
+        $regex = '/{(?:\s*(?:('.$keyTypeExp.')|\[\s*('.$keyNameExp.')\s*:\s*('.$keyTypeExp.')\s*\])\s*:)?\s*(.*[^\s]+)\s*}/';
+        $match = [];
 
-        if ($colonPos === false) {
-            return new PhpType(PhpType::TYPE_OBJECT, $this->parse($content), "string");
+        preg_match($regex, $typeName, $match);
+
+        if(!$match) return null;
+
+        if($match[1]) {
+            $keyType = $match[1];
+            $keyName = "key";
+        } elseif($match[3]) {
+            $keyType = $match[3];
+            $keyName = $match[2];
         } else {
-            $keyType = rtrim(substr($content, 0, $colonPos));
-            $valType = ltrim(substr($content, $colonPos+1));
-
-            if(!in_array($keyType, ["string", "int"])) {
-                throw new \Exception("Only string or int object key types are supported! Provided: $keyType");
-            }
-
-            return new PhpType(PhpType::TYPE_OBJECT, $this->parse($valType), $keyType);
+            $keyType = "string";
+            $keyName = "key";
         }
+
+        if($match[4]) {
+          $valueType = $this->parse($match[4]);
+        } else {
+          return null;
+        }
+
+        return new PhpType(PhpType::TYPE_OBJECT, $valueType, $keyType, $keyName);
+
     }
 
     private function parseClass(string $typeName) : PhpType {

@@ -26,9 +26,9 @@ class TypeNameResolverTest extends TestCase {
 
     public function testObject() {
 
-        $objType = new PhpType(PhpType::TYPE_OBJECT, new PhpType(PhpType::TYPE_SCALAR, "string"), "int");
+        $objType = new PhpType(PhpType::TYPE_OBJECT, new PhpType(PhpType::TYPE_SCALAR, "string"), "int", "id");
 
-        $this->assertEquals("{[key:number]:string}", $this->resolver->getTypeName($objType));
+        $this->assertEquals("{[id:number]:string}", $this->resolver->getTypeName($objType));
 
     }
 
