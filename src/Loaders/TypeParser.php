@@ -28,7 +28,7 @@ class TypeParser {
     }
 
     private function parseScalar(string $typeName) :? PhpType {
-        $scalars = ['string', 'int', 'float'];
+        $scalars = ['string', 'int', 'float', 'bool'];
         if(in_array($typeName, $scalars)) {
             return new PhpType(PhpType::TYPE_SCALAR, $typeName);
         }

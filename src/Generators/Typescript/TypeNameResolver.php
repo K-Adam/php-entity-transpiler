@@ -44,7 +44,8 @@ class TypeNameResolver {
     private function getScalarType($tValue): string {
         $replaceTypes = [
             "int" => "number",
-            "float" => "number"
+            "float" => "number",
+            "bool" => "boolean"
         ];
 
         $typeName = str_replace(
