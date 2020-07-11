@@ -22,7 +22,7 @@ class PropertyBuilder {
 
         $type = $this->parser->parse($annotation->type);
 
-        $property = new Property($name, $type);
+        $property = new Property($annotation->name ?? $name, $type);
 
         $property->default = $annotation->default;
 

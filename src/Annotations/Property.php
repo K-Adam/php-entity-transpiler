@@ -12,6 +12,9 @@ class Property {
     /** @var mixed */
     public $type = "mixed";
 
+    /** @var string */
+    public $name = null;
+
     /** @var mixed */
     public $default;
 
