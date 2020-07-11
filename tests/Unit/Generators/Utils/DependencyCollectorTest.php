@@ -16,6 +16,15 @@ class DependencyCollectorTest extends TestCase {
         $this->collector = new DependencyCollector();
     }
 
+    public function testAliasDependencies() {
+
+        $entity = new Entity("TestClass");
+        $entity->type = Entity::TYPE_ALIAS;
+        $entity->alias = new PhpType(PhpType::TYPE_CLASS, "MyNamespace\\MyClass");
+        
+        $this->assertEquals(["MyNamespace\\MyClass"], $this->collector->collectEntityDependencies($entity));
+    }
+
     public function testMixedScalarType() {
         $mixedType = new PhpType(PhpType::TYPE_MIXED);
         $scalarType = new PhpType(PhpType::TYPE_SCALAR);

@@ -10,6 +10,10 @@ class DependencyCollector {
 
     /** @return string[] */
     public function collectEntityDependencies(Entity $entity): array {
+        if($entity->type == Entity::TYPE_ALIAS) {
+            return $this->getTypeDependency($entity->alias);
+        }
+
         $result = $this->getHierarchyDependencies($entity);
         foreach($entity->properties as $property) {
             $result = array_merge($result, $this->getTypeDependency($property->type));

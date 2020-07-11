@@ -12,6 +12,7 @@ use EntityTranspiler\Entity;
 use EntityTranspiler\Properties\EnumValue;
 use EntityTranspiler\Utils\NameFormat\Writer;
 use EntityTranspiler\Generators\Utils\ClassResolver;
+use EntityTranspiler\Properties\PhpType;
 
 class ClassPrinterTest extends TestCase {
 
@@ -62,6 +63,14 @@ class ClassPrinterTest extends TestCase {
         $this->printer->enumNameFormat = Writer::PASCAL_CASE;
 
         $this->assertEquals("enum MyEntity {\n  Foo=\"BAR\"\n}", $this->printer->getClassString($entity));
+    }
+
+    public function testAlias() {
+        $entity = new Entity("MyEntity");
+        $entity->type = Entity::TYPE_ALIAS;
+        $entity->alias = new PhpType(PhpType::TYPE_SCALAR, "int");
+
+        $this->assertEquals("type MyEntity = number", $this->printer->getClassString($entity));
     }
 
     public function testHeaderWithParentClass() {

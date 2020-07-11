@@ -5,6 +5,7 @@ namespace EntityTranspiler;
 use EntityTranspiler\Utils\ClassRef;
 use EntityTranspiler\Properties\Property;
 use EntityTranspiler\Properties\EnumValue;
+use EntityTranspiler\Properties\PhpType;
 
 class Entity {
 
@@ -17,8 +18,12 @@ class Entity {
     /** @var EnumValue[] */
     public $enumValues = [];
 
+    /** @var PhpType */
+    public $alias;
+
     const TYPE_CLASS = "CLASS";
     const TYPE_ENUM = "ENUM";
+    const TYPE_ALIAS = "ALIAS";
 
     /** @var string */
     public $type = self::TYPE_CLASS;

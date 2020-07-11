@@ -3,6 +3,7 @@
 namespace Tests\Unit\Loaders;
 
 use Tests\TestCase;
+use EntityTranspiler\Annotations as ET;
 use EntityTranspiler\Loaders\Annotation as AnnotationLoader;
 use EntityTranspiler\Sources\PhpClass;
 use EntityTranspiler\EntityCollection;
@@ -10,6 +11,12 @@ use EntityTranspiler\EntityCollection;
 use EntityTranspiler\Properties\PhpType;
 
 class AnnotationTest extends TestCase {
+
+    private $loader;
+
+    protected function setUp(): void {
+        $this->loader = new AnnotationLoader();
+    }
 
     public function testClass() {
 
@@ -19,12 +26,10 @@ class AnnotationTest extends TestCase {
         $testClassAnnotated = new PhpClass($cnameAnnotated);
         $testClassEmpty = new PhpClass($cnameEmpty);
 
-        $loader = new AnnotationLoader();
+        $this->loader->processSource($testClassAnnotated);
+        $this->loader->processSource($testClassEmpty);
 
-        $loader->processSource($testClassAnnotated);
-        $loader->processSource($testClassEmpty);
-        
-        $collection = $loader->load();
+        $collection = $this->loader->load();
 
         $this->assertTrue($collection->hasName($cnameAnnotated));
         $this->assertFalse($collection->hasName($cnameEmpty));
@@ -35,11 +40,11 @@ class AnnotationTest extends TestCase {
         $cname = \TestClasses\SimpleProject01\MyClass01::class;
         $testClass = new PhpClass($cname);
 
-        $loader = new AnnotationLoader();
+        $this->loader = new AnnotationLoader();
 
-        $loader->processSource($testClass);
-        $collection = $loader->load();
-        
+        $this->loader->processSource($testClass);
+        $collection = $this->loader->load();
+
         $entity = $collection->getByName($cname);
 
         $this->assertTrue($entity->hasProperty('testString'));

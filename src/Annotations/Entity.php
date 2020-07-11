@@ -8,7 +8,13 @@ namespace EntityTranspiler\Annotations;
  */
 class Entity {
 
-    /** @Enum({"CLASS", "ENUM"}) */
+    /** @Enum({"CLASS", "ENUM", "ALIAS"}) */
     public $type = "CLASS";
+
+    /**
+    * Alias target
+    * @var string
+    */
+    public $target = null;
 
 }

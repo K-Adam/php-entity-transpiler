@@ -35,6 +35,8 @@ class ClassPrinter {
                 return $this->getEntityClassString($entity);
             case Entity::TYPE_ENUM:
                 return $this->getEntityEnumString($entity);
+            case Entity::TYPE_ALIAS:
+                return $this->getEntityAliasString($entity);
         }
 
         throw new \Exception("Unknown entity type: ".$entity->type);
@@ -105,6 +107,19 @@ class ClassPrinter {
         $className = $this->getClassName($entity->getClassRef());
 
         return "enum $className {\n{$enumText}}";
+    }
+
+    private function getEntityAliasString(Entity $entity): string {
+      $typeNameResolver = new TypeNameResolver();
+
+      if($this->classResolver) {
+          $typeNameResolver->classResolver = $this->classResolver;
+      }
+
+      $className = $this->getClassName($entity->getClassRef());
+      $aliasName = $typeNameResolver->getTypeName($entity->alias);
+
+      return "type $className = $aliasName";
     }
 
 }
