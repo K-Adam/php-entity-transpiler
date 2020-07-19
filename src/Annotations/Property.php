@@ -8,7 +8,7 @@ namespace EntityTranspiler\Annotations;
  */
 class Property {
 
-    // string|Collection
+    // string|Collection|Map
     /** @var mixed */
     public $type = "mixed";
 

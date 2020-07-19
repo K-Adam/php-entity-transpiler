@@ -46,6 +46,19 @@ class PropertyBuilderTest extends TestCase {
         $this->assertEquals(PhpType::TYPE_MIXED, $property->type->value->type);
     }
 
+    public function testMap() {
+        $annotation = new ET\Property();
+        $annotation->type = new ET\Map();
+
+        $property = $this->builder->build("pName", $annotation);
+
+        $this->assertEquals("pName", $property->name);
+        $this->assertEquals(PhpType::TYPE_OBJECT, $property->type->type);
+        $this->assertEquals(PhpType::TYPE_MIXED, $property->type->value->type);
+        $this->assertEquals("string", $property->type->key);
+        $this->assertEquals("key", $property->type->keyName);
+    }
+
     public function testDefault() {
         $annotation = new ET\Property();
         $annotation->default = "test";
