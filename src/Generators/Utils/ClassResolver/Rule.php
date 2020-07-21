@@ -27,6 +27,8 @@ class Rule {
     /** @var string|null */
     public $enumNameFormat = null;
 
+    public function __construct() {}
+
     public static function create(array $params): Rule {
 
         $validator = new ParameterValidator($params);

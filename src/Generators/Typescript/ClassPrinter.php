@@ -16,15 +16,19 @@ class ClassPrinter {
     private $indentation;
 
     /** @var ClassResolver */
-    public $classResolver;
+    private $classResolver;
 
     /** @var Transformer */
-    public $transformer;
+    public $transformer = null;
 
     /** @var string */
     public $enumNameFormat;
 
-    public function __construct(Indentation $indentation) {
+    public function __construct(
+        ClassResolver $classResolver,
+        Indentation $indentation
+    ) {
+        $this->classResolver = $classResolver;
         $this->indentation = $indentation;
     }
 
@@ -69,11 +73,7 @@ class ClassPrinter {
     private function getEntityClassString(Entity $entity): string {
         $ident = $this->indentation->get();
 
-        if($this->classResolver) {
-            $printer = new PropertyPrinter($this->classResolver);
-        } else {
-            $printer = new PropertyPrinter();
-        }
+        $printer = new PropertyPrinter($this->classResolver);
 
         $propText = "";
         foreach($entity->properties as $property) {
@@ -112,9 +112,7 @@ class ClassPrinter {
     private function getEntityAliasString(Entity $entity): string {
       $typeNameResolver = new TypeNameResolver();
 
-      if($this->classResolver) {
-          $typeNameResolver->classResolver = $this->classResolver;
-      }
+      $typeNameResolver->classResolver = $this->classResolver;
 
       $className = $this->getClassName($entity->getClassRef());
       $aliasName = $typeNameResolver->getTypeName($entity->alias);

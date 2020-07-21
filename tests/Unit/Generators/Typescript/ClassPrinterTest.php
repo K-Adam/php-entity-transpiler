@@ -13,6 +13,7 @@ use EntityTranspiler\Properties\EnumValue;
 use EntityTranspiler\Utils\NameFormat\Writer;
 use EntityTranspiler\Generators\Utils\ClassResolver;
 use EntityTranspiler\Properties\PhpType;
+use Tests\Utils\SimpleClassResolver;
 
 class ClassPrinterTest extends TestCase {
 
@@ -20,7 +21,10 @@ class ClassPrinterTest extends TestCase {
     private $prophet;
 
     protected function setUp(): void {
-        $this->printer = new ClassPrinter(new Indentation(Indentation::TYPE_SPACE, 2));
+        $this->printer = new ClassPrinter(
+            new SimpleClassResolver(),
+            new Indentation(Indentation::TYPE_SPACE, 2)
+        );
         $this->prophet = new \Prophecy\Prophet;
     }
 
@@ -77,13 +81,6 @@ class ClassPrinterTest extends TestCase {
 
         $entity = new Entity("MyClass");
         $entity->parentClass = new ClassRef("BaseClass");
-
-        $prophecy = $this->prophet->prophesize();
-        $prophecy->willExtend(ClassResolver::class);
-        $prophecy->resolveClassName($entity->parentClass)->willReturn("BaseClass");
-        $dummyResolver = $prophecy->reveal();
-
-        $this->printer->classResolver = $dummyResolver;
 
         $this->assertEquals("class MyClass extends BaseClass", $this->printer->getClassHeader($entity));
 

@@ -51,8 +51,7 @@ class Typescript implements Generator {
 
         $importData = $importBuilder->build();
 
-        $cPrinter = new ClassPrinter($this->indentation);
-        $cPrinter->classResolver = $this->classResolver;
+        $cPrinter = new ClassPrinter($this->classResolver, $this->indentation);
 
         $cRule = $this->classResolver->findRule($entity->getClassRef());
         if($cRule) {
