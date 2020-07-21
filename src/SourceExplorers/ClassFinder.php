@@ -11,10 +11,10 @@ class ClassFinder implements SourceExplorer {
     /** @var string * */
     private $path;
 
-    function __construct(string $path) {
+    public function __construct(string $path) {
         $this->path = $path;
     }
-    
+
     public function getPath(): string {
         return $this->path;
     }
@@ -37,13 +37,13 @@ class ClassFinder implements SourceExplorer {
 
         return $sources;
     }
-    
+
     public static function create(array $params): ClassFinder {
-        
+
         (new ParameterValidator($params))->assert("path", "string");
-        
+
         return new ClassFinder($params["path"]);
-        
+
     }
 
 }

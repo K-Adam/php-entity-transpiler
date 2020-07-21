@@ -8,7 +8,7 @@ class RelativePathConverter {
     private $relativeDotStart;
     private $removeExtension;
 
-    function __construct(string $directoryAbsolutePath, bool $relativeDotStart = true, bool $removeExtension = false) {
+    public function __construct(string $directoryAbsolutePath, bool $relativeDotStart = true, bool $removeExtension = false) {
         $this->path = $directoryAbsolutePath;
         $this->relativeDotStart = $relativeDotStart;
         $this->removeExtension = $removeExtension;

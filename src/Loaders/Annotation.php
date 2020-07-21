@@ -19,7 +19,7 @@ class Annotation implements Loader {
     /** @var AnnotationReader */
     private $reader;
 
-    function __construct(AnnotationReader $reader = null) {
+    public function __construct(AnnotationReader $reader = null) {
         $this->reader = $reader ?? new AnnotationReader();
         $this->collection = new EntityCollection();
 

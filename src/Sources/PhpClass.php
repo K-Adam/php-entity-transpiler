@@ -9,7 +9,7 @@ class PhpClass extends Source {
   /** @var string **/
   private $className;
 
-  function __construct($className) {
+  public function __construct($className) {
       $this->className = $className;
   }
 

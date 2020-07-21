@@ -8,7 +8,7 @@ class ImportPrinter {
 
     private $pathConverter;
 
-    function __construct(RelativePathConverter $pathConverter) {
+    public function __construct(RelativePathConverter $pathConverter) {
         $this->pathConverter = $pathConverter;
     }
 

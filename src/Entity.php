@@ -31,7 +31,7 @@ class Entity {
     /** @var ClassRef */
     public $parentClass;
 
-    function __construct(string $fullName) {
+    public function __construct(string $fullName) {
         $this->classRef = new ClassRef($fullName);
     }
 

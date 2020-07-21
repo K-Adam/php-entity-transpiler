@@ -13,7 +13,7 @@ class ClassRef {
     /** @var string */
     private $name;
 
-    function __construct(string $fullName) {
+    public function __construct(string $fullName) {
         $this->fullName = $fullName;
 
         $nameParts = explode('\\', $fullName);

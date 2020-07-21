@@ -24,7 +24,7 @@ class ClassPrinter {
     /** @var string */
     public $enumNameFormat;
 
-    function __construct(Indentation $indentation) {
+    public function __construct(Indentation $indentation) {
         $this->indentation = $indentation;
     }
 

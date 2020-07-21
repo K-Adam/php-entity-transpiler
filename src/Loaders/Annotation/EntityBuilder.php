@@ -16,7 +16,7 @@ class EntityBuilder {
 
     private $reader;
 
-    function __construct(AnnotationReader $reader) {
+    public function __construct(AnnotationReader $reader) {
         $this->reader = $reader;
     }
 

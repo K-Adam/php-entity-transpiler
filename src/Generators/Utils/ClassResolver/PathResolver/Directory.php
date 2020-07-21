@@ -9,14 +9,14 @@ use EntityTranspiler\Utils\ClassRef;
 use EntityTranspiler\Utils\ParameterValidator;
 
 class Directory extends PathResolver {
-    
+
     private $path;
     private $dirNameFormat;
     private $fileNameFormat;
-    
+
     // Additional parameters
-    
-    function __construct(string $path, string $dirNameFormat, string $fileNameFormat) {
+
+    public function __construct(string $path, string $dirNameFormat, string $fileNameFormat) {
         $this->path = $path;
         $this->dirNameFormat = $dirNameFormat;
         $this->fileNameFormat = $fileNameFormat;
@@ -27,15 +27,15 @@ class Directory extends PathResolver {
         $writer = new Writer();
 
         $fileName = $writer->write($this->fileNameFormat, $parser->parse($ref->getName()));
-        
+
         $dirNameFormat = $this->dirNameFormat;
         $namespaceParts = array_map(function($part) use($parser, $writer, $dirNameFormat) {
             return $writer->write($dirNameFormat, $parser->parse($part));
         }, $ref->getNamespaceChain());
-        
+
         return implode("/", array_merge([$this->path], $namespaceParts, [$fileName]));
     }
-    
+
     public function getPath(): string {
         return $this->path;
     }
@@ -47,17 +47,17 @@ class Directory extends PathResolver {
     public function getFileNameFormat(): string {
         return $this->fileNameFormat;
     }
-        
+
     public static function create(array $params): PathResolver {
-        
+
         $validator = new ParameterValidator($params);
-        
+
         $validator->assert("path", "string");
         $validator->assert("dirNameFormat", "string");
         $validator->assert("fileNameFormat", "string");
-       
+
         return new Directory($params["path"], $params["dirNameFormat"], $params["fileNameFormat"]);
-        
+
     }
 
 }

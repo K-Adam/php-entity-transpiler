@@ -10,7 +10,7 @@ class Property {
     public $nullable = false;
     public $optional = false;
 
-    function __construct(string $name, PhpType $type) {
+    public function __construct(string $name, PhpType $type) {
       $this->name = $name;
       $this->type = $type;
     }

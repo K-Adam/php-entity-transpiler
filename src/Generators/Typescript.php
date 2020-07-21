@@ -31,7 +31,7 @@ class Typescript implements Generator {
     /** @var array */
     private $results = [];
 
-    function __construct() {
+    public function __construct() {
 
         $this->indentation = self::getDefaultIndent();
         $this->classResolver = new ClassResolver();

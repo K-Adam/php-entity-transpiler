@@ -11,7 +11,7 @@ class PropertyBuilder {
 
     private $parser;
 
-    function __construct() {
+    public function __construct() {
         $this->parser = new TypeParser();
     }
 

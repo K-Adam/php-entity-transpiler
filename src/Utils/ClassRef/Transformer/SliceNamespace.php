@@ -7,20 +7,20 @@ use EntityTranspiler\Utils\ClassRef;
 use EntityTranspiler\Utils\ParameterValidator;
 
 class SliceNamespace extends Transformer{
-    
+
     private $offset;
     private $length;
-    
-    function __construct(int $offset, int $length = null) {
+
+    public function __construct(int $offset, int $length = null) {
         $this->offset = $offset;
         $this->length = $length;
     }
 
-    
+
     public function transform(ClassRef $ref): ClassRef {
         return ClassRef::fromParsed(array_slice($ref->getNamespaceChain(), $this->offset, $this->length), $ref->getName());
     }
-    
+
     public function getOffset() {
         return $this->offset;
     }
@@ -30,14 +30,14 @@ class SliceNamespace extends Transformer{
     }
 
     public static function create(array $params): Transformer {
-        
+
         $validator = new ParameterValidator($params);
-        
+
         $validator->assert("offset", "integer");
         $validator->assertType("length", "integer");
-        
+
         return new SliceNamespace($params["offset"], $params["length"] ?? null);
-        
+
     }
 
 }

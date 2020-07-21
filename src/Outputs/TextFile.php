@@ -6,7 +6,7 @@ class TextFile extends Output {
 
     private $content;
 
-    function __construct(string $path, string $content) {
+    public function __construct(string $path, string $content) {
         parent::__construct($path);
 
         $this->content = $content;

@@ -9,7 +9,7 @@ class PropertyPrinter {
 
     private $typeNameResolver;
 
-    function __construct(ClassResolver $classResolver = null) {
+    public function __construct(ClassResolver $classResolver = null) {
         $this->typeNameResolver = new TypeNameResolver();
 
         if($classResolver) {

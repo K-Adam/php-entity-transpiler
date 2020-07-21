@@ -11,7 +11,7 @@ class Composition extends Transformer {
     private $transformers;
 
     /** @param Transformer[] */
-    function __construct(array $transformers) {
+    public function __construct(array $transformers) {
         $this->transformers = $transformers;
     }
 
