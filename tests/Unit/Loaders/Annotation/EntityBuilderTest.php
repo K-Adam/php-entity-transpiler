@@ -30,6 +30,7 @@ class AnnotationBuilderTest extends TestCase {
 
         $prophecy = $this->prophet->prophesize();
         $prophecy->willExtend(ReflectionClass::class);
+        $prophecy->getName()->willReturn($target);
         $dummyReflector = $prophecy->reveal();
 
         $entity = $this->builder->build($dummyReflector, $aliasAnnotation);

@@ -21,7 +21,7 @@ class EntityBuilder {
     }
 
     public function build(ReflectionClass $reflectionClass, ET\Entity $entityAnnotation): Entity {
-        $entity = new Entity($reflectionClass->name);
+        $entity = new Entity($reflectionClass->getName());
 
         $parent = $reflectionClass->getParentClass();
         if($parent) {

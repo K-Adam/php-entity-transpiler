@@ -16,7 +16,11 @@ class Annotation implements Loader {
     /** @var EntityCollection */
     private $collection;
 
-    function __construct() {
+    /** @var AnnotationReader */
+    private $reader;
+
+    function __construct(AnnotationReader $reader = null) {
+        $this->reader = $reader ?? new AnnotationReader();
         $this->collection = new EntityCollection();
 
         AnnotationRegistry::registerLoader('class_exists');
@@ -24,27 +28,23 @@ class Annotation implements Loader {
 
     public function processSource(Source $source) {
 
-        if (!$source instanceof PhpClass) {
-            return;
-        }
+        if(!is_subclass_of($source, PhpClass::class)) return;
 
-        /** @var PhpClass * */
-        $classSource = $source;
+        $this->processPhpSource($source);
 
-        $reader = new AnnotationReader();
-        $reflectionClass = new ReflectionClass($classSource->getClassName());
+    }
 
-        $entityAnnotation = $reader->getClassAnnotation($reflectionClass, ET\Entity::class);
+    private function processPhpSource(PhpClass $classSource) {
+        $reflectionClass = $classSource->getReflectionClass();
 
-        if (!$entityAnnotation) {
-            return;
-        }
+        $entityAnnotation = $this->reader->getClassAnnotation($reflectionClass, ET\Entity::class);
 
-        $builder = new EntityBuilder($reader);
+        if(!$entityAnnotation) return;
+
+        $builder = new EntityBuilder($this->reader);
         $entity = $builder->build($reflectionClass, $entityAnnotation);
 
         $this->collection->add($entity);
-
     }
 
     public function load(): EntityCollection {
