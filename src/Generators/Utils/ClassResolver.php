@@ -53,6 +53,14 @@ class ClassResolver {
 
     }
 
+    public function resolveEnumPropertyName(ClassRef $ref, string $name): string {
+
+        [$rule, $ref] = $this->resolve($ref);
+
+        return $rule->enumResolver->resolvePropertyName($name);
+
+    }
+
     /** @return [Rule, ClassRef]*/
     public function resolve(ClassRef $ref): array {
         $rule = $this->findRule($ref);

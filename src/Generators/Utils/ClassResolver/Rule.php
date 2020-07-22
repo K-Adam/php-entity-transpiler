@@ -21,13 +21,15 @@ class Rule {
     /** @var ClassNameResolver */
     public $classNameResolver;
 
+    /** @var EnumResolver */
+    public $enumResolver;
+
     /** @var Transformer|null */
     public $transformer = null;
 
-    /** @var string|null */
-    public $enumNameFormat = null;
-
-    public function __construct() {}
+    public function __construct() {
+        $this->enumResolver = new EnumResolver();
+    }
 
     public static function create(array $params): Rule {
 
@@ -36,7 +38,7 @@ class Rule {
         $validator->assert("source", "string");
         $validator->assert("pathResolver", "array");
         $validator->assert("classNameResolver", "array");
-        $validator->assertType("enumNameFormat", "string");
+        $validator->assertType("enumResolver", "array");
 
         $nsParts = explode("\\", $params["source"]);
         $className = array_pop($nsParts);
@@ -51,8 +53,8 @@ class Rule {
             $rule->transformer = Transformer::create($params["transformer"]);
         }
 
-        if(isset($params["enumNameFormat"])) {
-            $rule->enumNameFormat = $params["enumNameFormat"];
+        if(isset($params["enumResolver"])) {
+            $rule->enumResolver = EnumResolver::create($params["enumResolver"]);
         }
 
         return $rule;

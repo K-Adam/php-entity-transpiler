@@ -14,6 +14,8 @@ use EntityTranspiler\Utils\NameFormat\Writer;
 use EntityTranspiler\Generators\Utils\ClassResolver;
 use EntityTranspiler\Properties\PhpType;
 use Tests\Utils\SimpleClassResolver;
+use Tests\Utils\SimpleRule;
+use EntityTranspiler\Generators\Utils\ClassResolver\EnumResolver;
 
 class ClassPrinterTest extends TestCase {
 
@@ -64,9 +66,16 @@ class ClassPrinterTest extends TestCase {
 
         $entity->enumValues[] = new EnumValue("FOO", "BAR");
 
-        $this->printer->enumNameFormat = Writer::PASCAL_CASE;
+        $rule = new SimpleRule();
+        $rule->enumResolver = new EnumResolver();
+        $rule->enumResolver->propertyNameFormat = Writer::PASCAL_CASE;
 
-        $this->assertEquals("enum MyEntity {\n  Foo=\"BAR\"\n}", $this->printer->getClassString($entity));
+        $printer = new ClassPrinter(
+            new SimpleClassResolver($rule),
+            new Indentation(Indentation::TYPE_SPACE, 2)
+        );
+
+        $this->assertEquals("enum MyEntity {\n  Foo=\"BAR\"\n}", $printer->getClassString($entity));
     }
 
     public function testAlias() {

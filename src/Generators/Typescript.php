@@ -58,9 +58,6 @@ class Typescript implements Generator {
             if($cRule->transformer) {
                 $cPrinter->transformer = $cRule->transformer;
             }
-            if($cRule->enumNameFormat) {
-                $cPrinter->enumNameFormat = $cRule->enumNameFormat;
-            }
         }
 
         $cString = $cPrinter->getClassString($entity);

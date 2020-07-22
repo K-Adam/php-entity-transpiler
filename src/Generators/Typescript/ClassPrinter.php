@@ -21,9 +21,6 @@ class ClassPrinter {
     /** @var Transformer */
     public $transformer = null;
 
-    /** @var string */
-    public $enumNameFormat;
-
     public function __construct(
         ClassResolver $classResolver,
         Indentation $indentation
@@ -92,13 +89,10 @@ class ClassPrinter {
         foreach($entity->enumValues as $enumValue) {
 
             $eValue = is_numeric($enumValue->value)? $enumValue->value : ('"' . $enumValue->value . '"');
-            $eName = $enumValue->name;
-
-            if($this->enumNameFormat) {
-                $eName = (new Writer())->write($this->enumNameFormat, (new Parser())->parse($eName));
-            }
+            $eName = $this->classResolver->resolveEnumPropertyName($entity->getClassRef(), $enumValue->name);
 
             $enumRows[] = $ident . $eName . '=' . $eValue;
+
         }
 
         $enumText = implode(",\n", $enumRows);
