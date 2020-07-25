@@ -11,17 +11,15 @@ use EntityTranspiler\Sources\Source;
 use EntityTranspiler\Sources\PhpClass;
 use EntityTranspiler\Loaders\Annotation\EntityBuilder;
 
-class Annotation implements Loader {
-
-    /** @var EntityCollection */
-    private $collection;
+class Annotation extends Loader {
 
     /** @var AnnotationReader */
     private $reader;
 
-    public function __construct(AnnotationReader $reader = null) {
+    public function __construct(EntityCollection $collection = null, AnnotationReader $reader = null) {
+        parent::__construct($collection);
+
         $this->reader = $reader ?? new AnnotationReader();
-        $this->collection = new EntityCollection();
 
         AnnotationRegistry::registerLoader('class_exists');
     }
@@ -47,14 +45,8 @@ class Annotation implements Loader {
         $this->collection->add($entity);
     }
 
-    public function load(): EntityCollection {
-        $collection = $this->collection;
-        $this->collection = new EntityCollection();
-        return $collection;
-    }
-
-    public static function create(array $params): Annotation {
-        return new Annotation();
+    public static function create(array $params, EntityCollection $collection = null): Annotation {
+        return new Annotation($collection);
     }
 
 }

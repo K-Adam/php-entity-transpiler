@@ -43,9 +43,9 @@ class AnnotationTest extends TestCase {
         $pReader->getClassAnnotation($dummyReflector, ET\Entity::class)->willReturn($entityAnnotation);
         $dummyReader = $pReader->reveal();
 
-        $loader = new AnnotationLoader($dummyReader);
+        $loader = new AnnotationLoader(null, $dummyReader);
         $loader->processSource($dummyClass);
-        $entities = $loader->load()->getEntities();
+        $entities = $loader->flush()->getEntities();
 
         $entity = $entities[0];
 
