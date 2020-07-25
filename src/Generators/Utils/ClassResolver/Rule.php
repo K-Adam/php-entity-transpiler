@@ -27,7 +27,13 @@ class Rule {
     /** @var Transformer|null */
     public $transformer = null;
 
-    public function __construct() {
+    public function __construct(
+        PathResolver $pathResolver,
+        ClassNameResolver $classNameResolver
+    ) {
+        $this->pathResolver = $pathResolver;
+        $this->classNameResolver = $classNameResolver;
+
         $this->enumResolver = new EnumResolver();
     }
 
@@ -43,11 +49,12 @@ class Rule {
         $nsParts = explode("\\", $params["source"]);
         $className = array_pop($nsParts);
 
-        $rule = new Rule();
+        $rule = new Rule(
+            PathResolver::create($params["pathResolver"]),
+            ClassNameResolver::create($params["classNameResolver"])
+        );
         $rule->namespaceChain = $nsParts;
         $rule->className = $className;
-        $rule->pathResolver = PathResolver::create($params["pathResolver"]);
-        $rule->classNameResolver = ClassNameResolver::create($params["classNameResolver"]);
 
         if(isset($params["transformer"])) {
             $rule->transformer = Transformer::create($params["transformer"]);

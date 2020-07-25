@@ -10,9 +10,9 @@ use EntityTranspiler\Utils\NameFormat\Writer;
 class SimpleRule extends Rule {
 
     public function __construct() {
-        parent::__construct();
-
-        $this->pathResolver = new SingleFileResolver("output");
-        $this->classNameResolver = new ClassNameResolver(Writer::PASCAL_CASE);
+        parent::__construct(
+            new SingleFileResolver("output"),
+            new ClassNameResolver(Writer::PASCAL_CASE)
+        );
     }
 }
