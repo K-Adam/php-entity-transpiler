@@ -9,7 +9,11 @@ use EntityTranspiler\Utils\ClassRef;
 class TypeNameResolver {
 
     /** @var ClassResolver */
-    public $classResolver;
+    private $classResolver;
+
+    public function __construct(ClassResolver $classResolver) {
+        $this->classResolver = $classResolver;
+    }
 
     public function getTypeName(PhpType $pType): string {
 
@@ -78,10 +82,6 @@ class TypeNameResolver {
                 default:
                     throw new \Exception("Built in type cannot be resolved: $tValue");
             }
-        }
-
-        if(!$this->classResolver) {
-            throw new \Exception("No classResolver found!");
         }
 
         return $this->classResolver->resolveClassName($ref);

@@ -21,12 +21,17 @@ class ClassPrinter {
     /** @var Transformer */
     public $transformer = null;
 
+    /** @var TypeNameResolver */
+    private $typeNameResolver;
+
     public function __construct(
         ClassResolver $classResolver,
         Indentation $indentation
     ) {
         $this->classResolver = $classResolver;
         $this->indentation = $indentation;
+
+        $this->typeNameResolver = new TypeNameResolver($classResolver);
     }
 
     public function getClassString(Entity $entity): string {
@@ -70,7 +75,7 @@ class ClassPrinter {
     private function getEntityClassString(Entity $entity): string {
         $ident = $this->indentation->get();
 
-        $printer = new PropertyPrinter($this->classResolver);
+        $printer = new PropertyPrinter($this->typeNameResolver);
 
         $propText = "";
         foreach($entity->properties as $property) {
@@ -104,12 +109,8 @@ class ClassPrinter {
     }
 
     private function getEntityAliasString(Entity $entity): string {
-      $typeNameResolver = new TypeNameResolver();
-
-      $typeNameResolver->classResolver = $this->classResolver;
-
       $className = $this->getClassName($entity->getClassRef());
-      $aliasName = $typeNameResolver->getTypeName($entity->alias);
+      $aliasName = $this->typeNameResolver->getTypeName($entity->alias);
 
       return "type $className = $aliasName";
     }

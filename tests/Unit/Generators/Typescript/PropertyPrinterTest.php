@@ -6,10 +6,11 @@ use Tests\TestCase;
 
 use EntityTranspiler\Properties\Property;
 use EntityTranspiler\Generators\Typescript\PropertyPrinter;
-
+use EntityTranspiler\Generators\Typescript\TypeNameResolver;
 use EntityTranspiler\Generators\Utils\ClassResolver;
 use EntityTranspiler\Generators\Utils\ClassResolver\ClassNameResolver;
 use EntityTranspiler\Utils\NameFormat\Writer;
+use Tests\Utils\SimpleClassResolver;
 
 use EntityTranspiler\Properties\PhpType;
 
@@ -18,7 +19,11 @@ class PropertyPrinterTest extends TestCase {
     private $printer;
 
     protected function setUp(): void {
-        $this->printer = new PropertyPrinter();
+        $this->printer = new PropertyPrinter(
+            new TypeNameResolver(
+                new SimpleClassResolver()
+            )
+        );
     }
 
     public function testSimpleProperty() {
@@ -36,12 +41,12 @@ class PropertyPrinterTest extends TestCase {
             "classNameResolver" => ["format"=>Writer::CAMEL_CASE],
             "pathResolver" => ["type"=>"SINGLE_FILE", "path"=>"out"]
         ]]);
-        $this->printer = new PropertyPrinter($classResolver);
+        $printer = new PropertyPrinter(new TypeNameResolver($classResolver));
 
         $prop = new Property("testInstance", new PhpType(PhpType::TYPE_CLASS, "App\\MyClass"));
 
         $expected = "testInstance: myClass";
-        $result = $this->printer->getPropertyString($prop);
+        $result = $printer->getPropertyString($prop);
 
         $this->assertEquals($expected, $result);
     }

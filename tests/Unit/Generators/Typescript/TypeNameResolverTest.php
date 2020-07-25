@@ -4,6 +4,7 @@ namespace Tests\Unit\Generators\Typescript;
 
 use Tests\TestCase;
 
+use Tests\Utils\SimpleClassResolver;
 use EntityTranspiler\Generators\Typescript\TypeNameResolver;
 use EntityTranspiler\Generators\Utils\ClassResolver\ClassNameResolver;
 use EntityTranspiler\Utils\NameFormat\Writer;
@@ -15,7 +16,9 @@ class TypeNameResolverTest extends TestCase {
     private $resolver;
 
     protected function setUp(): void {
-        $this->resolver = new TypeNameResolver();
+        $this->resolver = new TypeNameResolver(
+            new SimpleClassResolver()
+        );
     }
 
     public function testBuiltIn() {

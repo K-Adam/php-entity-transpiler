@@ -9,12 +9,8 @@ class PropertyPrinter {
 
     private $typeNameResolver;
 
-    public function __construct(ClassResolver $classResolver = null) {
-        $this->typeNameResolver = new TypeNameResolver();
-
-        if($classResolver) {
-            $this->typeNameResolver->classResolver = $classResolver;
-        }
+    public function __construct(TypeNameResolver $typeNameResolver) {
+        $this->typeNameResolver = $typeNameResolver;
     }
 
     public function getPropertyString(Property $property): string {
