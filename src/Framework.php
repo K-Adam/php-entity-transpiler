@@ -10,13 +10,23 @@ use EntityTranspiler\Utils\ParameterValidator;
 class Framework {
 
     /** @var SourceExplorer */
-    public $sourceExplorer;
+    private $sourceExplorer;
 
     /** @var Loader */
-    public $loader;
+    private $loader;
 
     /** @var Generator */
-    public $generator;
+    private $generator;
+
+    public function __construct(
+        SourceExplorer $sourceExplorer,
+        Loader $loader,
+        Generator $generator
+    ) {
+        $this->sourceExplorer = $sourceExplorer;
+        $this->loader = $loader;
+        $this->generator = $generator;
+    }
 
     public function execute() {
 
@@ -27,7 +37,7 @@ class Framework {
         }
 
         $entityCollection = $this->loader->flush();
-        
+
         foreach($entityCollection->getEntities() as $entity) {
             $this->generator->processEntity($entity);
         }
@@ -49,10 +59,11 @@ class Framework {
         $validator->assert("loader", "array");
         $validator->assert("generator", "array");
 
-        $framework = new Framework();
-        $framework->sourceExplorer = self::createItem($params["sourceExplorer"]);
-        $framework->loader = self::createItem($params["loader"]);
-        $framework->generator = self::createItem($params["generator"]);
+        $framework = new Framework(
+            self::createItem($params["sourceExplorer"]),
+            self::createItem($params["loader"]),
+            self::createItem($params["generator"])
+        );
 
         return $framework;
 
