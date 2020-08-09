@@ -15,7 +15,8 @@
     "autoload": {
         "psr-4": {
             "EntityTranspiler\\": "src/"
-        }
+        },
+        "files": ["./bootstrap.php"]
     },
     "autoload-dev": {
         "psr-4": {
