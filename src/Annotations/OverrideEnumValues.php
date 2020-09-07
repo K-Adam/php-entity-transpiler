@@ -11,7 +11,7 @@ class OverrideEnumValues {
     private $values;
 
     public function __construct(array $values = []) {
-        $this->values = $values;
+        $this->values = $values["value"] ?? [];
     }
 
     public function getValues() {
