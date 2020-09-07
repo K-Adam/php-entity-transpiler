@@ -2,47 +2,28 @@
 
 namespace EntityTranspiler\Loaders;
 
-use EntityTranspiler\Annotations as ET;
-use ReflectionClass;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use EntityTranspiler\EntityCollection;
 use EntityTranspiler\Sources\Source;
-use EntityTranspiler\Sources\PhpClass;
-use EntityTranspiler\Loaders\Annotation\EntityBuilder;
+use EntityTranspiler\Loaders\Annotation\SourceVisitor;
 
 class Annotation extends Loader {
 
-    /** @var AnnotationReader */
-    private $reader;
+    /** @var SourceVisitor */
+    private $visitor;
 
     public function __construct(EntityCollection $collection = null, AnnotationReader $reader = null) {
         parent::__construct($collection);
 
-        $this->reader = $reader ?? new AnnotationReader();
+        $reader = $reader ?? new AnnotationReader();
+        $this->visitor = new SourceVisitor($reader, $this->collection);
 
         AnnotationRegistry::registerLoader('class_exists');
     }
 
     public function processSource(Source $source) {
-
-        if(!is_subclass_of($source, PhpClass::class)) return;
-
-        $this->processPhpSource($source);
-
-    }
-
-    private function processPhpSource(PhpClass $classSource) {
-        $reflectionClass = $classSource->getReflectionClass();
-
-        $entityAnnotation = $this->reader->getClassAnnotation($reflectionClass, ET\Entity::class);
-
-        if(!$entityAnnotation) return;
-
-        $builder = new EntityBuilder($this->reader);
-        $entity = $builder->build($reflectionClass, $entityAnnotation);
-
-        $this->collection->add($entity);
+        $source->acceptVisitor($this->visitor);
     }
 
     public static function create(array $params, EntityCollection $collection = null): Annotation {

@@ -66,8 +66,16 @@ class EntityBuilder {
     }
 
     private function loadEnumValues(Entity $entity, ReflectionClass $reflectionClass) {
-        $constants = $reflectionClass->getConstants();
+        $overrides = $this->reader->getClassAnnotation($reflectionClass, ET\OverrideEnumValues::class);
 
+        if($overrides) {
+            foreach ($overrides->getValues() as $name => $value) {
+                $entity->enumValues[] = new EnumValue($name, $value);
+            }
+            return;
+        }
+
+        $constants = $reflectionClass->getConstants();
         foreach ($constants as $name => $value) {
             $entity->enumValues[] = new EnumValue($name, $value);
         }

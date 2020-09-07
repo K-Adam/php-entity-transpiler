@@ -3,7 +3,6 @@
 namespace Tests\Unit\Loaders;
 
 use Tests\TestCase;
-use EntityTranspiler\Loaders\Annotation as AnnotationLoader;
 use EntityTranspiler\EntityCollection;
 
 use ReflectionClass;
@@ -13,13 +12,13 @@ use EntityTranspiler\Sources\PhpClass;
 
 use EntityTranspiler\Properties\PhpType;
 
-class AnnotationTest extends TestCase {
+use EntityTranspiler\Loaders\Annotation\SourceVisitor;
 
-    private $loader;
+class SourceVisitorTest extends TestCase {
+
     private $prophet;
 
     protected function setUp(): void {
-        $this->loader = new AnnotationLoader();
         $this->prophet = new \Prophecy\Prophet;
     }
 
@@ -43,10 +42,12 @@ class AnnotationTest extends TestCase {
         $pReader->getClassAnnotation($dummyReflector, ET\Entity::class)->willReturn($entityAnnotation);
         $dummyReader = $pReader->reveal();
 
-        $loader = new AnnotationLoader(null, $dummyReader);
-        $loader->processSource($dummyClass);
-        $entities = $loader->flush()->getEntities();
+        $collection = new EntityCollection();
+        $visitor = new SourceVisitor($dummyReader, $collection);
 
+        $visitor->visitPhpClass($dummyClass);
+
+        $entities = $collection->getEntities();
         $entity = $entities[0];
 
         $this->assertEquals("MyClass", $entity->getClassRef());
