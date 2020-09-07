@@ -11,7 +11,7 @@ use EntityTranspiler\Annotations as ET;
 use ReflectionClass;
 use Doctrine\Common\Annotations\AnnotationReader;
 
-class AnnotationBuilderTest extends TestCase {
+class EntityBuilderTest extends TestCase {
 
     private $builder;
     private $prophet;
@@ -48,10 +48,10 @@ class AnnotationBuilderTest extends TestCase {
         $prophecy->getConstants()->willReturn([]);
         $dummyReflector = $prophecy->reveal();
 
-        $overrideValues = new ET\OverrideEnumValues([
+        $overrideValues = new ET\OverrideEnumValues(["value" => [
             "NAME1" => "VALUE1",
             "NAME2" => "VALUE2"
-        ]);
+        ]]);
 
         $prophecy = $this->prophet->prophesize();
         $prophecy->willExtend(AnnotationReader::class);
