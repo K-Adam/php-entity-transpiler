@@ -28,10 +28,10 @@ class User {
      */
     private $id;
 
-  	/**
+    /**
      * @ET\Property(type="string")
-  	 */
-  	private $name;
+     */
+    private $name;
 }
 ```
 
@@ -114,8 +114,8 @@ The result should look like this:
 
 ```typescript
 export class User {
-	id: number;
-	name: string;
+    id: number;
+    name: string;
 }
 ```
 
