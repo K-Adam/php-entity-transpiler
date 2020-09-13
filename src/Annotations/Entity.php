@@ -13,8 +13,14 @@ class Entity {
 
     /**
     * Alias target
-    * @var string
+    * string|Collection|Map
+    * @var mixed
     */
     public $target = null;
+
+    /**
+    * @var \EntityTranspiler\Annotations\Property[]
+    */
+    public $extraProperties = [];
 
 }

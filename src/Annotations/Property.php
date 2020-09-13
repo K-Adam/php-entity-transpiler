@@ -4,7 +4,7 @@ namespace EntityTranspiler\Annotations;
 
 /**
  * @Annotation
- * @Target({"PROPERTY"})
+ * @Target({"PROPERTY", "ANNOTATION"})
  */
 class Property {
 

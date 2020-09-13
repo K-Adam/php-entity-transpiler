@@ -32,6 +32,7 @@ class EntityBuilder {
             case Entity::TYPE_CLASS:
                 $entity->type = Entity::TYPE_CLASS;
                 $this->loadProperties($entity, $reflectionClass);
+                $this->loadExtraProperties($entity, $entityAnnotation);
                 break;
             case Entity::TYPE_ENUM:
                 $entity->type = Entity::TYPE_ENUM;
@@ -62,6 +63,20 @@ class EntityBuilder {
             }
 
             $entity->properties[] = $builder->build($pname, $propertyAnnotation);
+        }
+    }
+
+    private function loadExtraProperties(Entity $entity, ET\Entity $entityAnnotation) {
+        $builder = new PropertyBuilder();
+
+        foreach($entityAnnotation->extraProperties as $property) {
+
+            if(is_null($property->name)) {
+                throw new \Exception("Extra property cannot have NULL as name");
+            }
+
+            $entity->properties[] = $builder->build($property->name, $property);
+
         }
     }
 
