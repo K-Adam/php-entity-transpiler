@@ -34,6 +34,8 @@ class PropertyPrinter {
                 $pValue = '"' . addslashes($property->default) . '"';
             } elseif(is_numeric($property->default)) {
                 $pValue = strval($property->default);
+            } elseif(is_array($property->default)) {
+                $pValue = json_encode($property->default);
             } else {
                 throw new \Exception("Unknown default value type: ".$property->default);
             }
